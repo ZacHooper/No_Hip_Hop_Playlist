@@ -1,15 +1,18 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import spotifyCred from '../config/config'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
+import Card from "../components/card"
+
 export default function Home() {
   const router = useRouter()
-  const scope = 'playlist-modify-public'
 
-  const [token, setToken] = useState('')
+  const [token, setToken] = useState(undefined)
+
+  const [card1Loading, setCard1Loading] = useState(false)
+  const [card3Loading, setCard3Loading] = useState(false)
+  const [card4Loading, setCard4Loading] = useState(false)
 
   // Set token from 'code' param URL
   useEffect(() => {
@@ -21,22 +24,25 @@ export default function Home() {
   }
 
   const getUser = async () => {
+    setCard1Loading(true)
     const user = await fetch(`http://localhost:5000/user/get?token=${token}`)
-    console.log(user);
-  }
-
-  const handleLoginUser = async () => {
-    const access_token = await fetch("http://localhost:5000/login")
-    console.log(access_token);
+    if (user) {
+      setCard1Loading(false)
+    }
+    console.log(await user.json());
   }
 
   const handleCleanPlaylist = async () => {
+    setCard4Loading(true)
     const cleanPlaylist = await fetch(`http://localhost:5000/playlist/clean?token=${token}&playlist_id=1ahh5eiX08eeiKxxXqZlPp`)
+    if (cleanPlaylist) {
+      setCard4Loading(false)
+    }
     console.log(cleanPlaylist);
   }
 
   const handleCreatePlaylist = async () => {
-    
+    setCard3Loading(true)
     const playlist = await fetch(`http://localhost:5000/playlist/remove/no_hip_hop?token=${token}`)
     const playlist_list = await playlist.json();
     const data = await {
@@ -51,7 +57,19 @@ export default function Home() {
       },
       body: JSON.stringify(data)
     })
+    if (noHipHopHitlist) {
+      setCard3Loading(false)
+    }
     console.log(await noHipHopHitlist.json());
+  }
+
+  const handleLogin = () => {
+    router.push("http://localhost:5000/login")
+  }
+
+  const handleLogout = () => {
+    setToken(undefined)
+    router.push("/")
   }
   
   return (
@@ -67,40 +85,49 @@ export default function Home() {
         </h1>
 
         <p className={styles.description}>
-          Re-create the Triple J Hitlist on Spotify but without all the Hip Hop songs in it. 
+          Re-create he Triple J Hitlist on Spotify but without all the Hip Hop songs in it. 
         </p>
 
         <div className={styles.grid}>
-          <div className={styles.card} onClick={getUser}>
-            <h3>Get User &rarr;</h3>
-            <p>Print the user's details to the console</p>
-          </div>
+          <Card 
+            header="Login &rarr;"
+            text="Get an access token for a user by logging in" 
+            onClick={handleLogin}
+            isActive={true} />
 
-          <a className={styles.card} href="http://localhost:5000/login">
-            <h3>Login &rarr;</h3>
-            <p>Get an access token for a user by logging in</p>
-          </a>
+          <Card 
+            header="Logout &rarr;"
+            text="Get an access token for a user by logging in" 
+            onClick={handleLogout}
+            isActive={typeof token === 'undefined' ? false : true} />
 
-          <div
+
+          <Card 
+            header="Get User &rarr;" 
+            text="Print the user's details to the console" 
+            onClick={getUser} 
+            isActive={typeof token === 'undefined' ? false : true}
+            loading={card1Loading}/> 
+
+          <Card 
+            header="Create Playlist &rarr;"
+            text="Generate and create the No Hip Hop Playlist"
             onClick={handleCreatePlaylist}
-            className={styles.card}
-          >
-            <h3>Create Playlist &rarr;</h3>
-            <p>Generate and create the No Hip Hop Playlist</p>
-          </div>
+            isActive={typeof token === 'undefined' ? false : true}
+            loading={card3Loading}/>
 
-          <div
+          <Card 
+            header="Clean Playlist &rarr;"
+            text="Remove all songs currently in the No Hip Hop Playlist"
             onClick={handleCleanPlaylist}
-            className={styles.card}
-          >
-            <h3>Clean Playlist &rarr;</h3>
-            <p>Remove all songs currently in the No Hip Hop Playlist</p>
-          </div>
+            loading={card4Loading}
+            isActive={typeof token === 'undefined' ? false : true} />
+
         </div>
       </main>
 
       <footer className={styles.footer}>
-        
+        Created by Zac Hooper
       </footer>
     </div>
   )

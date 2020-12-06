@@ -9,12 +9,6 @@ import urllib
 from .Config import config
 from .noHipHop import hitlist_id, generate_playlist
 
-test_tracklist = [
-    'spotify:track:1hcIauR39vnreHqv9scwM2',
-    'spotify:track:0d6bZwEAi1XblGRhnzPfgC',
-    'spotify:track:6zrKKIQkJbjK5mWRCImFIs'
-]
-
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -108,8 +102,6 @@ def clean_playlist():
 @app.route('/playlist/replace', methods=['POST'])
 @cross_origin()
 def update_playlist():
-    # token = request.args.get('token')
-    # playlist_id = request.args.get('playlist_id')
 
     data = request.get_json()
     

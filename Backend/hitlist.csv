@@ -1,4 +1,6 @@
 Track,Artist,Genre,Genre Status
+Real Shit (with benny blanco),Juice WRLD,|['chicago rap', 'melodic rap']|,False
+Circles,Megan Thee Stallion,|['houston rap', 'pop', 'pop rap', 'trap queen']|,False
 1st Time,Bakar,['uk alternative hip hop'],False
 CONFIDENT,Tasman Keith,['australian hip hop'],False
 Heaven of My Own,Dallas Woods,['australian hip hop'],False
@@ -11,5 +13,3 @@ After All This Time,Allday,|['australian hip hop', 'australian indie', 'australi
 Reece's Peeces,Nerve,|['aussie drill', 'australian hip hop', 'australian trap', 'australian underground hip hop']|,False
 feel away (feat. James Blake & Mount Kimbie),slowthai,|['hip hop', 'rap', 'uk alternative hip hop', 'uk hip hop']|,False
 Princess Cuts (feat. Young T & Bugsey),Headie One,['uk hip hop'],False
-Role Models,Kobie Dee,|['australian hip hop', 'australian trap', 'australian underground hip hop']|,False
-Bullseye,JessB,['nz hip hop'],False
