@@ -15,7 +15,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/')
 def home():
-  return "you're at home"
+  return "<h1>you're at home</h1>"
 
 @app.route('/login')
 @cross_origin()
