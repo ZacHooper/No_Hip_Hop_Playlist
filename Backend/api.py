@@ -6,8 +6,8 @@ import spotipy as sp
 from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
 import urllib
 
-from .Config import config
-from .noHipHop import hitlist_id, generate_playlist
+from Config import config
+from noHipHop import hitlist_id, generate_playlist
 
 app = Flask(__name__)
 cors = CORS(app)
