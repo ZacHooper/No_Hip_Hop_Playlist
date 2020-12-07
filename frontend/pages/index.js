@@ -36,6 +36,19 @@ export default function Home() {
     const user = await res_user.json()
     setUser(user)
     console.log(user);
+        /*
+      First check if the user has the playlist yet
+    */
+    const res_userPlaylists = await fetch(`http://localhost:5000/user/playlist/list?token=${token}`)
+    const userPlaylists = await res_userPlaylists.json()
+
+    for (var i = 0; i < userPlaylists.items.length - 1; i++) {
+      let playlist = userPlaylists.items[i]
+      if (playlist.name === 'Triple J (no hip hop) Hitlist') {
+        setPlaylistID(playlist)
+        break;
+      }
+    }
   }
 
   /**
@@ -75,7 +88,7 @@ export default function Home() {
     for (var i = 0; i < userPlaylists.items.length - 1; i++) {
       let playlist = userPlaylists.items[i]
       if (playlist.name === 'Triple J (no hip hop) Hitlist') {
-        setPlaylistID(playlist.id)
+        setPlaylistID(playlist)
         data.playlist_id = playlist.id
         break;
       }
@@ -86,7 +99,7 @@ export default function Home() {
       console.log("need to create the playlist");
       const res_playlist = await fetch(`http://localhost:5000/playlist/create?token=${token}`)
       const new_playlist = await res_playlist.json()
-      setPlaylistID(new_playlist.id) // set the ID for future calls
+      setPlaylistID(new_playlist) // set the ID for future calls
       data.playlist_id = new_playlist.id // update the payload with the id
     }
   
@@ -143,11 +156,11 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          <span onClick={checkToken}>No</span> Hip-Hop <a href="https://open.spotify.com/playlist/1ahh5eiX08eeiKxxXqZlPp?si=AL_fqVM9S2ib4sDJ8QqFpA" target="_blank">Hitlist</a>
+          {user.display_name ? user.display_name + '\'s' : null} <span onClick={checkToken}>No</span> Hip-Hop <a href={playlistID ? playlistID.external_urls.spotify : 'https://open.spotify.com/playlist/6pA8CEkNjjSz22kMNvm8wK'} target="_blank">Hitlist</a>
         </h1>
 
         <p className={styles.description}>
-          Re-create he Triple J Hitlist on Spotify but without all the Hip Hop songs in it. 
+          Re-create the Triple J Hitlist on Spotify but without all the Hip Hop songs in it. 
         </p>
 
         <div className={styles.grid}>
