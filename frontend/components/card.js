@@ -16,7 +16,11 @@ const Card = (props) => {
   return (
     <div className={style} onClick={props.isActive ? props.onClick : null}>
       <h3>{props.header}</h3>
-      { loading ? <Loading loading={loading} /> : <p>{props.text}</p> }
+      { 
+        loading 
+          ? <Loading loading={loading} /> 
+          : <p>{props.text}</p>
+      }
     </div>
   )
 }

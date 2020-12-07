@@ -99,6 +99,14 @@ def clean_playlist():
     result = spotify.user_playlist_remove_all_occurrences_of_tracks(user['uri'], playlist_id, current_songs)
     return {'token': token, 'playlist_id': playlist_id, 'result': result}
 
+@app.route('/user/playlist/list')
+@cross_origin()
+def get_user_playlist():
+    token = request.args.get('token')
+    spotify = sp.Spotify(client_credentials_manager=SpotifyClientCredentials(), auth=token)
+    result = spotify.current_user_playlists()
+    return result
+
 @app.route('/playlist/replace', methods=['POST'])
 @cross_origin()
 def update_playlist():
@@ -109,6 +117,18 @@ def update_playlist():
     user = spotify.current_user()
 
     result = spotify.user_playlist_replace_tracks(user['uri'], data['playlist_id'], data['tracklist']['ok_list'])
+    return result
+
+@app.route('/playlist/create')
+@cross_origin()
+def create_playlist():
+    token = request.args.get('token')
+
+    spotify = sp.Spotify(client_credentials_manager=SpotifyClientCredentials(), auth=token)
+    user = spotify.current_user()
+
+    result = spotify.user_playlist_create(user['id'], 'Triple J (no hip hop) Hitlist', public=True, description="The Triple J Hitlist with all the hip hop and rap songs removed. No direspect to these artist's music I just personally prefer the playlist without having to constantly skip over their music. Updated weekly")
+    print(result)
     return result
 
 @app.route('/playlist/remove/no_hip_hop')
