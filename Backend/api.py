@@ -15,22 +15,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/')
 def home():
-  username = '1260769471'
-  scope = 'playlist-modify-public'
-  token = sp.util.prompt_for_user_token(username, scope)
-  
-  birdy_uri = 'spotify:artist:2WX2uTcsvV5OnS0inACecP'
-  spotify = sp.Spotify(client_credentials_manager=SpotifyClientCredentials(), auth=token)
-
-  results = spotify.artist_albums(birdy_uri, album_type='album')
-  albums = results['items']
-  while results['next']:
-      results = spotify.next(results)
-      albums.extend(results['items'])
-
-  print(token)
-
-  return results
+  return "you're at home"
 
 @app.route('/login')
 @cross_origin()
